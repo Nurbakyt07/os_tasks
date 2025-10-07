@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,8 @@ using System.Threading;
 class ProcessTask
 {
     public string Name { get; set; }
-    public int Priority { get; set; } // 1 = жоғары, 3 = төмен
+    public int Priority { get; set; }
+    public int BurstTime { get; set; }
 }
 
 class Program
@@ -16,22 +16,22 @@ class Program
     {
         Console.WriteLine("=== Priority Scheduling Demo ===\n");
 
-        List<ProcessTask> tasks = new List<ProcessTask>
+        List<ProcessTask> processes = new List<ProcessTask>
         {
-            new ProcessTask { Name = "Task A", Priority = 3 },
-            new ProcessTask { Name = "Task B", Priority = 1 },
-            new ProcessTask { Name = "Task C", Priority = 2 }
+            new ProcessTask { Name = "P1", Priority = 3, BurstTime = 4 },
+            new ProcessTask { Name = "P2", Priority = 1, BurstTime = 3 },
+            new ProcessTask { Name = "P3", Priority = 2, BurstTime = 2 }
         };
 
-        // Приоритет бойынша сұрыптау
-        var sorted = tasks.OrderBy(t => t.Priority);
+        // Приоритеті бойынша (кіші сан — жоғары приоритет)
+        var sorted = processes.OrderBy(p => p.Priority).ToList();
 
-        foreach (var task in sorted)
+        foreach (var p in sorted)
         {
-            Console.WriteLine($"Executing {task.Name} with priority {task.Priority}");
-            Thread.Sleep(1000);
+            Console.WriteLine($"Executing {p.Name} with Priority {p.Priority}");
+            Thread.Sleep(p.BurstTime * 500);
         }
 
-        Console.WriteLine("\nAll tasks executed based on priority.");
+        Console.WriteLine("\nAll processes executed based on priority.");
     }
 }
