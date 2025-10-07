@@ -1,36 +1,39 @@
-
 using System;
 using System.Threading;
 
 class Program
 {
-    static bool running = true;
-
-    static void BackgroundTask()
-    {
-        while (running)
-        {
-            Console.WriteLine("[Low Priority] Background task running...");
-            Thread.Sleep(700);
-        }
-    }
-
     static void Main()
     {
         Console.WriteLine("=== Preemptive Scheduling Demo ===\n");
 
-        Thread background = new Thread(BackgroundTask);
-        background.Priority = ThreadPriority.BelowNormal;
-        background.Start();
-
-        for (int i = 0; i < 5; i++)
+        Thread highPriority = new Thread(() =>
         {
-            Console.WriteLine("[High Priority] Main task executing...");
-            Thread.Sleep(500);
-        }
+            for (int i = 0; i < 3; i++)
+            {
+                Console.WriteLine("High Priority Task running...");
+                Thread.Sleep(300);
+            }
+        });
 
-        running = false;
-        background.Join();
+        Thread lowPriority = new Thread(() =>
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Console.WriteLine("Low Priority Task running...");
+                Thread.Sleep(700);
+            }
+        });
+
+        // Приоритет беру
+        highPriority.Priority = ThreadPriority.Highest;
+        lowPriority.Priority = ThreadPriority.Lowest;
+
+        highPriority.Start();
+        lowPriority.Start();
+
+        highPriority.Join();
+        lowPriority.Join();
 
         Console.WriteLine("\nPreemptive scheduling demonstration complete.");
     }
