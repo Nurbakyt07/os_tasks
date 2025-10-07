@@ -1,4 +1,3 @@
-
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -9,11 +8,11 @@ class Program
     {
         Console.WriteLine("=== Thread vs Process demonstration ===\n");
 
-        // Процесс (мысалы, калькуляторды іске қосу)
+        // Процесс (мысалы, Notepad ашу)
         Process.Start("notepad.exe");
         Console.WriteLine("Process started: Notepad");
 
-        // Thread (ағын)
+        // Thread (ағын) мысалы
         Thread thread = new Thread(() =>
         {
             for (int i = 0; i < 5; i++)
